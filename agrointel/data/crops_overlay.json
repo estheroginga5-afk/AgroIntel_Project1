@@ -1,0 +1,101 @@
+{
+  "_readme": "Curated layer on top of ecocrop_subset.csv. Every number here carries a source id from `sources`. Unknown values are null, never guessed. To add a crop: add its EcoCrop row to ecocrop_subset.csv and an entry under `crops` here.",
+  "sources": {
+    "ecocrop": {
+      "citation": "FAO EcoCrop database (ecocrop.apps.fao.org). Rows read from the OpenCLIM mirror EcoCrop_DB.csv, github.com/OpenCLIM/ecocrop. Maize (Zea mays, EcoPort 2175) was cross-checked against the FAO data sheet and matched; the other crops were not individually cross-checked.",
+      "url": "https://ecocrop.apps.fao.org/ecocrop/srv/en/dataSheet?id=2175",
+      "accessed": "2026-11-14",
+      "limitations": "Broad, generalised ranges that cover all varieties and many production systems. Rainfall is labelled 'annual' on the FAO sheet; how it maps to a single crop cycle is an assumption made in the recommendation stage. Cycle length spans all varieties."
+    },
+    "herridge2021": {
+      "citation": "Herridge, D.F., Giller, K.E., Jensen, E.S., Peoples, M.B. (2021). Quantifying country-to-global scale nitrogen fixation for grain legumes: I. Reliance on nitrogen fixation of soybean, groundnut and pulses. Plant and Soil 469:1-14. doi:10.1007/s11104-021-05167-6",
+      "url": "https://doi.org/10.1007/s11104-021-05167-6",
+      "accessed": "2026-11-14",
+      "limitations": "Values are mean +/- SD of %Ndfa (share of legume N from the atmosphere) for crop GROUPS, not per-crop. Read from the abstract page; author order should be checked against the published article."
+    },
+    "lengwati2020": {
+      "citation": "Lengwati, D.M., Mathews, C., Dakora, F.D. (2020). Rotation Benefits From N2-Fixing Grain Legumes to Cereals. Frontiers in Sustainable Food Systems 4:94. doi:10.3389/fsufs.2020.00094",
+      "url": "https://www.frontiersin.org/articles/10.3389/fsufs.2020.00094",
+      "accessed": "2026-11-14",
+      "limitations": "ONE site (Nelspruit, South Africa), one fixation season (2011/12, 288 mm rain) and one following maize season (2012/13, 465 mm), maize with no N fertilizer. Indicative of direction and size of benefit only; not transferable as a prediction for other places."
+    },
+    "fews_kenya": {
+      "citation": "FEWS NET Data Explorer Knowledge Base, Kenya country book (describes a 2024 Ministry of Agriculture official's regional seasonal calendar).",
+      "url": "https://help.fews.net/fde/v3/kenya-country-book",
+      "accessed": "2026-11-14",
+      "limitations": "Calendar is given for seasonal crops with 4-7 month cycles as a group, not per crop. Onset of the long rains has become erratic. Not crop- or variety-specific."
+    },
+    "recocrop_doc": {
+      "citation": "Recocrop R package documentation (CRAN) on how EcoCrop parameters are used in suitability modelling.",
+      "url": "https://cran.r-project.org/web/packages/Recocrop/refman/Recocrop.html",
+      "accessed": "2026-11-14",
+      "limitations": "Documentation does not state whether EcoCrop rainfall is a season total; it says FAO gave annual values that Recocrop converts to monthly."
+    }
+  },
+  "crops": {
+    "maize":        {"common_name": "Maize",                 "ecocrop_code": 2175,  "group": "cereal"},
+    "common_bean":  {"common_name": "Common bean",           "ecocrop_code": 1668,  "group": "grain_legume",
+                     "n_fixation": {"pct_ndfa": 38, "pct_ndfa_sd": 11.1, "basis": "common bean", "src": "herridge2021"}},
+    "sorghum":      {"common_name": "Sorghum",               "ecocrop_code": 48747, "group": "cereal"},
+    "finger_millet":{"common_name": "Finger millet",         "ecocrop_code": 5657,  "group": "cereal"},
+    "pearl_millet": {"common_name": "Pearl millet",          "ecocrop_code": 8418,  "group": "cereal"},
+    "cowpea":       {"common_name": "Cowpea",                "ecocrop_code": 2153,  "group": "grain_legume",
+                     "n_fixation": {"pct_ndfa": 62, "pct_ndfa_sd": 13.4,
+                                    "basis": "group: groundnut, green/black gram, cowpea, chickpea, field pea, lentil, vetches, Bambara groundnut",
+                                    "src": "herridge2021",
+                                    "single_site_kg_n_ha": 32, "single_site_src": "lengwati2020"},
+                     "rotation_benefit": {"next_crop": "maize (no N fertilizer)", "grain_yield_gain_pct": 37,
+                                          "evidence": "single site, one season", "src": "lengwati2020"}},
+    "groundnut":    {"common_name": "Groundnut",             "ecocrop_code": 2199,  "group": "grain_legume",
+                     "n_fixation": {"pct_ndfa": 62, "pct_ndfa_sd": 13.4,
+                                    "basis": "group: groundnut, green/black gram, cowpea, chickpea, field pea, lentil, vetches, Bambara groundnut",
+                                    "src": "herridge2021",
+                                    "single_site_kg_n_ha": 67, "single_site_src": "lengwati2020"},
+                     "rotation_benefit": {"next_crop": "maize (no N fertilizer)", "grain_yield_gain_pct": 47,
+                                          "evidence": "single site, one season", "src": "lengwati2020"}},
+    "soybean":      {"common_name": "Soybean",               "ecocrop_code": 1150,  "group": "grain_legume",
+                     "n_fixation": {"pct_ndfa": 61, "pct_ndfa_sd": 14.0,
+                                    "basis": "soybean, North America/Argentina/Asia/Africa/Oceania group (Brazil 78, Europe 44 reported separately)",
+                                    "src": "herridge2021"}},
+    "green_gram":   {"common_name": "Green gram (mung bean)","ecocrop_code": 2150,  "group": "grain_legume",
+                     "n_fixation": {"pct_ndfa": 62, "pct_ndfa_sd": 13.4,
+                                    "basis": "group: groundnut, green/black gram, cowpea, chickpea, field pea, lentil, vetches, Bambara groundnut",
+                                    "src": "herridge2021",
+                                    "single_site_kg_n_ha": 39, "single_site_src": "lengwati2020"},
+                     "rotation_benefit": {"next_crop": "maize (no N fertilizer)", "grain_yield_gain_pct": 32,
+                                          "evidence": "single site, one season", "src": "lengwati2020"}},
+    "pigeon_pea":   {"common_name": "Pigeon pea",            "ecocrop_code": 576,   "group": "grain_legume",
+                     "n_fixation": {"pct_ndfa": 74, "pct_ndfa_sd": 11.8, "basis": "group: pigeonpea, faba bean, lupin",
+                                    "src": "herridge2021"}},
+    "cassava":      {"common_name": "Cassava",               "ecocrop_code": 1420,  "group": "root_tuber"},
+    "sweet_potato": {"common_name": "Sweet potato",          "ecocrop_code": 1265,  "group": "root_tuber"},
+    "rice":         {"common_name": "Rice",                  "ecocrop_code": 1574,  "group": "cereal"}
+  },
+  "not_yet_covered": [
+    "Variety-level data (durations, drought/disease tolerance) for any country: needs national lists such as KALRO/KEPHIS for Kenya.",
+    "Crop-specific drought tolerance classes: EcoCrop gives rainfall limits only.",
+    "Pest and disease break effects per crop pair: no verified source read yet, so none are encoded.",
+    "Crop-specific planting calendars: only a grouped seasonal calendar for Western Kenya is included.",
+    "Quantified nutrient uptake/removal: EcoCrop's soil fertility requirement is used as the only nutrient-demand signal."
+  ],
+  "calendars": [
+    {
+      "id": "kenya_west_medium_altitude",
+      "name": "Western and Nyanza Kenya, medium-altitude (bimodal) zones",
+      "bbox": {"lat_min": -1.3, "lat_max": 1.3, "lon_min": 33.9, "lon_max": 35.3},
+      "bbox_note": "Approximate rectangle chosen by this project to represent the region; not an official boundary.",
+      "applies_to": "seasonal crops with roughly 4 to 7 month cycles (cereals, pulses, nuts, oil crops), as a group",
+      "applies_to_groups": ["cereal", "grain_legume"],
+      "seasons": [
+        {"name": "long rains",  "plant_months": [3, 4],  "harvest_months": [7, 8]},
+        {"name": "short rains", "plant_months": [9, 10], "harvest_months": [12, 1]}
+      ],
+      "caveats": [
+        "Higher-altitude parts of Bungoma and Kakamega are unimodal: planting Mar-Apr, harvest Nov-Dec. Altitude is not yet used to tell these apart.",
+        "Long-rains onset has become erratic; planting can stretch from March to May.",
+        "Not crop-specific. Long-cycle crops such as cassava are not covered."
+      ],
+      "src": "fews_kenya"
+    }
+  ]
+}
